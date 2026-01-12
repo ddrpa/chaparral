@@ -11,15 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class NameDesensitizeTest {
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    static class ChineseName {
-        @Sensitive(strategy = NAME)
-        public String name;
-
-        public ChineseName(String name) {
-            this.name = name;
-        }
-    }
-
     @Test
     void should_desensitize() throws JsonProcessingException {
         String original = "张三";
@@ -36,5 +27,14 @@ class NameDesensitizeTest {
         assertEquals(
                 "{\"name\":null}",
                 mapper.writeValueAsString(new ChineseName(null)));
+    }
+
+    static class ChineseName {
+        @Sensitive(strategy = NAME)
+        public String name;
+
+        public ChineseName(String name) {
+            this.name = name;
+        }
     }
 }

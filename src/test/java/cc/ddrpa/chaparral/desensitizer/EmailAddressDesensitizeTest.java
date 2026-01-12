@@ -9,16 +9,8 @@ import static cc.ddrpa.chaparral.enums.DesensitizeStrategy.EMAIL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class EmailAddressDesensitizeTest {
+
     private static final ObjectMapper mapper = new ObjectMapper();
-
-    static class EmailAddress {
-        @Sensitive(strategy = EMAIL)
-        public String email;
-
-        public EmailAddress(String email) {
-            this.email = email;
-        }
-    }
 
     @Test
     void should_desensitize() throws JsonProcessingException {
@@ -39,5 +31,14 @@ class EmailAddressDesensitizeTest {
         assertEquals(
                 "{\"email\":null}",
                 mapper.writeValueAsString(new EmailAddress(null)));
+    }
+
+    static class EmailAddress {
+        @Sensitive(strategy = EMAIL)
+        public String email;
+
+        public EmailAddress(String email) {
+            this.email = email;
+        }
     }
 }

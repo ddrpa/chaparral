@@ -6,7 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
-public class HowToUseShowcaseTests {
+class HowToUseShowcaseTests {
     private static final ObjectMapper mapper = new ObjectMapper();
     private static final Integer THE_ANSWER_TO_LIFE_THE_UNIVERSE_AND_EVERYTHING = 42;
     private static final SystemUser user = new SystemUser()
@@ -20,7 +20,7 @@ public class HowToUseShowcaseTests {
 
 
     @Test
-    public void test() throws JsonProcessingException {
+    void test() throws JsonProcessingException {
         System.out.println(mapper.writeValueAsString(user));
     }
 }

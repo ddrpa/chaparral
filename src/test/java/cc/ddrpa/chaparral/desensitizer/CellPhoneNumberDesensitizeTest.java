@@ -12,16 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * 本测试用例中使用的手机号均为虚拟号码，使用在线工具随机生成
  */
 class CellPhoneNumberDesensitizeTest {
+
     private static final ObjectMapper mapper = new ObjectMapper();
-
-    static class CellNumber {
-        @Sensitive(strategy = CELL)
-        public String cell;
-
-        public CellNumber(String cell) {
-            this.cell = cell;
-        }
-    }
 
     @Test
     void should_desensitize() throws JsonProcessingException {
@@ -39,5 +31,14 @@ class CellPhoneNumberDesensitizeTest {
         assertEquals(
                 "{\"cell\":null}",
                 mapper.writeValueAsString(new CellNumber(null)));
+    }
+
+    static class CellNumber {
+        @Sensitive(strategy = CELL)
+        public String cell;
+
+        public CellNumber(String cell) {
+            this.cell = cell;
+        }
     }
 }

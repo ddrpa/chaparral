@@ -11,16 +11,8 @@ import static cc.ddrpa.chaparral.enums.DesensitizeStrategy.BIRTHDAY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BirthdayDesensitizeTest {
+
     private static final ObjectMapper mapper = new ObjectMapper();
-
-    static class Birthday {
-        @Sensitive(strategy = BIRTHDAY)
-        public LocalDate birthday;
-
-        public Birthday(LocalDate birthday) {
-            this.birthday = birthday;
-        }
-    }
 
     @Test
     void should_desensitize() throws JsonProcessingException {
@@ -34,5 +26,14 @@ class BirthdayDesensitizeTest {
         assertEquals(
                 "{\"birthday\":null}",
                 mapper.writeValueAsString(new Birthday(null)));
+    }
+
+    static class Birthday {
+        @Sensitive(strategy = BIRTHDAY)
+        public LocalDate birthday;
+
+        public Birthday(LocalDate birthday) {
+            this.birthday = birthday;
+        }
     }
 }

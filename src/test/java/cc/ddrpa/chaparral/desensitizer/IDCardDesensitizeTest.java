@@ -12,16 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * 本测试用例中使用的身份证号均为虚拟号码，使用在线工具随机生成
  */
 class IDCardDesensitizeTest {
+
     private static final ObjectMapper mapper = new ObjectMapper();
-
-    static class IDCard {
-        @Sensitive(strategy = ID_CARD)
-        public String id;
-
-        public IDCard(String id) {
-            this.id = id;
-        }
-    }
 
     @Test
     void should_desensitize() throws JsonProcessingException {
@@ -39,5 +31,14 @@ class IDCardDesensitizeTest {
         assertEquals(
                 "{\"id\":null}",
                 mapper.writeValueAsString(new IDCard(null)));
+    }
+
+    static class IDCard {
+        @Sensitive(strategy = ID_CARD)
+        public String id;
+
+        public IDCard(String id) {
+            this.id = id;
+        }
     }
 }

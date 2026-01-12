@@ -37,5 +37,9 @@ public enum DesensitizeStrategy {
     /**
      * Should return null no matter what was passed
      */
-    NULLING_OUT
+    NULLING_OUT,
+    /**
+     * 社交媒体用户名脱敏，支持 emoji
+     */
+    SOCIAL_MEDIA
 }

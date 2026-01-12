@@ -12,16 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * 本测试用例中使用的银行卡号均为虚拟卡号，使用在线工具随机生成
  */
 class BankAccountDesensitizeTest {
+
     private static final ObjectMapper mapper = new ObjectMapper();
-
-    static class CardNumber {
-        @Sensitive(strategy = BANK_ACCOUNT)
-        public String card;
-
-        public CardNumber(String card) {
-            this.card = card;
-        }
-    }
 
     @Test
     void should_desensitize_debit_card() throws JsonProcessingException {
@@ -47,5 +39,14 @@ class BankAccountDesensitizeTest {
         assertEquals(
                 "{\"card\":null}",
                 mapper.writeValueAsString(new CardNumber(null)));
+    }
+
+    static class CardNumber {
+        @Sensitive(strategy = BANK_ACCOUNT)
+        public String card;
+
+        public CardNumber(String card) {
+            this.card = card;
+        }
     }
 }

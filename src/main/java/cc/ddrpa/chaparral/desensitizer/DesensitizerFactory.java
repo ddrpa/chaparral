@@ -7,11 +7,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DesensitizerFactory {
-    private DesensitizerFactory() {
-    }
-
     private static final Map<Class<?>, IDesensitizer<?>> classMap = new HashMap<>();
     private static final Map<DesensitizeStrategy, IDesensitizer<?>> strategyMap = new HashMap<>();
+
+    private DesensitizerFactory() {
+    }
 
     public static IDesensitizer<?> getDesensitizer(DesensitizeStrategy strategy, Class<?> clazz) {
         if (strategy.equals(DesensitizeStrategy.CUSTOM)) {
@@ -31,6 +31,8 @@ public class DesensitizerFactory {
                     return new IDCardMaskingDesensitizer();
                 case NAME:
                     return new NameMaskingDesensitizer();
+                case SOCIAL_MEDIA:
+                    return new SocialMediaUsernameMaskingDesensitizer();
                 default:
                     return new NullingOutDesensitizer();
             }

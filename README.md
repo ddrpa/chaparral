@@ -19,20 +19,6 @@ JSON 序列化过程中脱敏。
 </dependency>
 ```
 
-预览版本可以在添加 snapshots
-源后通过 [sonatype.org](https://s01.oss.sonatype.org/#nexus-search;quick~cc.ddrpa)
-查找最新版本。
-
-```xml
-
-<repositories>
-  <repository>
-    <id>snapshots</id>
-    <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-  </repository>
-</repositories>
-```
-
 ## 使用方法
 
 在 Result Bean 的属性上添加 `cc.ddrpa.chaparral.annotation.Sensitive` 注解，使用
@@ -48,7 +34,7 @@ public class SystemUserVO {
   private Address address;
   // 默认使用 nulling out 规则
   @Sensitive
-    private Integer fieldShouldBeNullingOut;
+  private Integer fieldShouldBeNullingOut;
 }
 ```
 
@@ -73,14 +59,16 @@ public class SystemUserVO {
 
 ### 预置脱敏规则
 
-| 脱敏策略         | 应用场景           | 脱敏规则                                     | 示例                 |
-|--------------|----------------|------------------------------------------|--------------------|
-| BANK_ACCOUNT | 银行卡号           | 保留前6后4，中间用「*」代替，总长 16                    | 622307******9940   |
-| BIRTHDAY     | 生日（以及其他日期）     | 出生日期脱敏，使用 yyyy-MM-dd Pattern，年份用「****」代替 | ****-10-01         |
-| CELL         | 手机号码           | 保留前3后4，中间使用「*」代替                         | 188****9941        |
-| EMAIL        | 电子邮件地址         | 保留用户名部分的第一个和最后一个字符，以及电子邮箱域名              | n***y@ddrpa.cc     |
-| ID_CARD      | 中华人民共和国居民身份证号码 | 保留前1后1，共18位，用「*」填充                       | 3****************3 |
-| NAME         | 中文姓名           | 无论原长多少，保留第一个字和最后一个字，中间添加一个「*」            | 张*三                |
+| 脱敏策略         | 应用场景           | 脱敏规则                                                                            | 示例                 |
+|--------------|----------------|---------------------------------------------------------------------------------|--------------------|
+| BANK_ACCOUNT | 银行卡号           | 保留前6后4，中间用「*」代替，总长 16                                                           | 622307******9940   |
+| BIRTHDAY     | 生日（以及其他日期）     | 出生日期脱敏，使用 yyyy-MM-dd Pattern，年份用「****」代替                                        | ****-10-01         |
+| CELL         | 手机号码           | 保留前3后4，中间使用「*」代替                                                                | 188****9941        |
+| EMAIL        | 电子邮件地址         | 保留用户名部分的第一个和最后一个字符，以及电子邮箱域名                                                     | n***y@ddrpa.cc     |
+| ID_CARD      | 中华人民共和国居民身份证号码 | 保留前1后1，共18位，用「*」填充                                                              | 3****************3 |
+| NAME         | 中文姓名           | 无论原长多少，保留第一个字和最后一个字，中间添加一个「*」                                                   | 张*三                |
+| SOCIAL_MEDIA | 社交媒体账号         | 少于3个字符的，替换为「\*\*」，三个字符将中间字符替换为「\*」，超过三个字符的，保留前2后1，中间使用「\*\*\*」代替，emoji 表情视为单个字符 | ab****y           |
+| NULLING_OUT  | 空值化            | 直接将该字段值设为 null                                                                  | null               |
 
 ### 自定义脱敏规则
 

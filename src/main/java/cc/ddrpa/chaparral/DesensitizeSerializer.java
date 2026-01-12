@@ -14,14 +14,6 @@ import java.util.Objects;
 import static cc.ddrpa.chaparral.Constant.DEFAULT_MASK;
 
 public class DesensitizeSerializer extends StdSerializer<Object> implements ContextualSerializer {
-    public IDesensitizer getDesensitizer() {
-        return desensitizer;
-    }
-
-    public void setDesensitizer(IDesensitizer desensitizer) {
-        this.desensitizer = desensitizer;
-    }
-
     private IDesensitizer desensitizer;
 
     protected DesensitizeSerializer() {
@@ -42,6 +34,14 @@ public class DesensitizeSerializer extends StdSerializer<Object> implements Cont
 
     protected DesensitizeSerializer(StdSerializer<?> src) {
         super(src);
+    }
+
+    public IDesensitizer getDesensitizer() {
+        return desensitizer;
+    }
+
+    public void setDesensitizer(IDesensitizer desensitizer) {
+        this.desensitizer = desensitizer;
     }
 
     @Override
