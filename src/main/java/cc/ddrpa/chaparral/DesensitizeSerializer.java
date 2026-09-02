@@ -3,10 +3,14 @@ package cc.ddrpa.chaparral;
 import cc.ddrpa.chaparral.annotation.Sensitive;
 import cc.ddrpa.chaparral.desensitizer.DesensitizerFactory;
 import cc.ddrpa.chaparral.desensitizer.IDesensitizer;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.ser.ContextualSerializer;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.JsonMappingException;
+import tools.jackson.databind.JsonSerializer;
+import tools.jackson.databind.SerializerProvider;
+import tools.jackson.databind.ser.ContextualSerializer;
+import tools.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -24,18 +28,6 @@ public class DesensitizeSerializer extends StdSerializer<Object> implements Cont
         super(t);
     }
 
-    protected DesensitizeSerializer(JavaType type) {
-        super(type);
-    }
-
-    protected DesensitizeSerializer(Class<?> t, boolean dummy) {
-        super(t, dummy);
-    }
-
-    protected DesensitizeSerializer(StdSerializer<?> src) {
-        super(src);
-    }
-
     public IDesensitizer getDesensitizer() {
         return desensitizer;
     }
@@ -45,18 +37,31 @@ public class DesensitizeSerializer extends StdSerializer<Object> implements Cont
     }
 
     @Override
-    public void serialize(Object value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+    public void serialize(Object value, JsonGenerator gen, SerializerProvider provider) throws JacksonException {
         IDesensitizer desensitizer = getDesensitizer();
         if (Objects.nonNull(desensitizer)) {
             try {
-                gen.writeObject(desensitizer.desensitize(value));
+                Object masked = desensitizer.desensitize(value);
+                gen.writePOJO(masked);
             } catch (Exception e) {
-                gen.writeString(DEFAULT_MASK);
+                try {
+                    gen.writeString(DEFAULT_MASK);
+                } catch (IOException io) {
+                    throw JacksonException.from(io);
+                }
             }
         } else if (value instanceof String) {
-            gen.writeString(DEFAULT_MASK);
+            try {
+                gen.writeString(DEFAULT_MASK);
+            } catch (IOException io) {
+                throw JacksonException.from(io);
+            }
         } else {
-            gen.writeObject(value);
+            try {
+                gen.writePOJO(value);
+            } catch (IOException io) {
+                throw JacksonException.from(io);
+            }
         }
     }
 
